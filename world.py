@@ -3,15 +3,24 @@ import random
 import math
 
 class World:
+    # World attributes: starting_room, rooms, room_grid, grid_size
     def __init__(self):
         self.starting_room = None
         self.rooms = {}
         self.room_grid = []
         self.grid_size = 0
+    
     def load_graph(self, room_graph):
+
+        # Determine the number of rooms
         num_rooms = len(room_graph)
+
+        # Create empty "buckets" for each room
         rooms = [None] * num_rooms
+
         grid_size = 1
+
+        # Loop through the rooms and add each to the ro
         for i in range(0, num_rooms):
             x = room_graph[i][0][0]
             grid_size = max(grid_size, room_graph[i][0][0], room_graph[i][0][1])
