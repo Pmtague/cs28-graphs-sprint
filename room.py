@@ -17,12 +17,13 @@ class Room:
         print(str(self))
     def get_exits(self):
         exits = []
+        # Altered order of exits list to support a certain traversal
         if self.n_to is not None:
             exits.append("n")
-        if self.s_to is not None:
-            exits.append("s")
         if self.w_to is not None:
             exits.append("w")
+        if self.s_to is not None:
+            exits.append("s")
         if self.e_to is not None:
             exits.append("e")
         return exits
