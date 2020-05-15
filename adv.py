@@ -30,36 +30,35 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
-reverse = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
-
 
 ''' Here's my code '''
 
+
 # Use DFT to move through the graph from current room
-def traversal(current_room = player.current_room.id, prev_direction = None, visited = None):
+def traversal(visited = None):
 
     # Initialize an empty set for visited rooms
-        if visited is None:
-            visited = set()
+    if visited is None:
+        visited = set()
+ 
+    # Add the current room to visited
+    visited.add(player.current_room.id)
+    print(player.current_room.id)
+
+    # Assign a variable for the exits list
+    exits = player.current_room.get_exits()
+
+    # Loop through the unexplored exits
+    for exit in exits:
+
+        # If the exit is unexplored
+        if exit not in visited:
+
+            # Run the entire function on the next_vert
+            traversal(exit, visited)
         
-        # Add the current room to visited
-        visited.add(current_room)
-        print(current_room)
-
-        # Assign a variable for the exits list
-        exits = player.current_room.get_exits()
-
-        # Loop through the unexplored exits
-        for exit in exits:
-
-            # If the exit is unexplored
-            if exit not in visited:
-
-                # Run the entire function on the next_vert
-                traversal(exit, visited)
-        
-        if exits == None:
-            backtrack(current_index = -1)
+    if exits == None:
+        backtrack(current_index = -1)
 
 traversal(player)
 
@@ -75,6 +74,8 @@ traversal(player)
 # Helper function to use BFS to find the nearest unexplored path
 
 def backtrack(curr_index = -1):
+
+    reverse = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
 
     # Store previous direction in a variable
     prev_dir = reverse[traversal_path[curr_index]]
@@ -96,7 +97,9 @@ def backtrack(curr_index = -1):
     # If there are unexplored exits
     else:
         current_room = player.current_room
-        traversal(current_room)
+        # traversal(current_room)
+
+backtrack(curr_index= -1)
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()

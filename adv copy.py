@@ -62,7 +62,7 @@ def traversal(player, prev_direction = None, visited = None):
             if exit != prev_direction and exit != reverse_direction():
                 available_exits.append(exit)
                 traversal(exit)
-            else:
+            # else:
                 
             
 
@@ -91,7 +91,7 @@ def traversal(player, prev_direction = None, visited = None):
         # If 
         if next_direction not in visited:
 
-            traversal(next_direction, visited)
+            traversal(player.current_room.get_room_in_direction(next_direction), visited)
 
 traversal(player)
 
