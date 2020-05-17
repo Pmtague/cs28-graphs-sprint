@@ -9,7 +9,6 @@ from ast import literal_eval
 # Load world
 world = World()
 
-
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
@@ -33,34 +32,45 @@ traversal_path = []
 
 ''' Here's my code '''
 
+# Mark all exits unexplored
+
+for room in room_graph:
+    for direction in room_graph[room][1]:
+        room_graph[room][1][direction] = [room_graph[room][1][direction], "?"]
+        print("Rooms", room_graph[room][1])
+
+# Assign a current room variable
+# current_room = player.current_room.id
+
 
 # Use DFT to move through the graph from current room
-def traversal(visited = None):
+
+def traversal(current_room = player.current_room.id, visited = None):
 
     # Initialize an empty set for visited rooms
     if visited is None:
         visited = set()
  
     # Add the current room to visited
-    visited.add(player.current_room.id)
-    print(player.current_room.id)
+    visited.add(current_room)
+    print(visited)
 
     # Assign a variable for the exits list
     exits = player.current_room.get_exits()
 
     # Loop through the unexplored exits
     for exit in exits:
-
+        print("Exits", exit)
         # If the exit is unexplored
-        if exit not in visited:
+        if visited[-1][1][exit][1] == "?":
 
             # Run the entire function on the next_vert
-            traversal(exit, visited)
+            traversal(room_graph[player.current_room.id][1][exit][0], visited)
         
     if exits == None:
-        backtrack(current_index = -1)
+        pass
 
-traversal(player)
+traversal(player.current_room.id)
 
         # Get new current room
         # Mark new room visited
@@ -73,33 +83,33 @@ traversal(player)
 
 # Helper function to use BFS to find the nearest unexplored path
 
-def backtrack(curr_index = -1):
+# def backtrack(curr_index = -1):
 
-    reverse = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
+#     reverse = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
 
-    # Store previous direction in a variable
-    prev_dir = reverse[traversal_path[curr_index]]
+#     # Store previous direction in a variable
+#     prev_dir = reverse[traversal_path[curr_index]]
 
-    # Move back to previous room
-    player.travel(prev_dir)
+#     # Move back to previous room
+#     player.travel(prev_dir)
 
-    # Add new move to the traversal path
-    traversal.append(prev_dir)
+#     # Add new move to the traversal path
+#     traversal.append(prev_dir)
 
-    # Check for unexplored exits
-    exits = player.current_room.get_exits()
+#     # Check for unexplored exits
+#     exits = player.current_room.get_exits()
 
-    # If exits == None
-    if exits == None:
-        curr_index -= 2
-        backtrack(curr_index)
+#     # If exits == None
+#     if exits == None:
+#         curr_index -= 2
+#         backtrack(curr_index)
     
-    # If there are unexplored exits
-    else:
-        current_room = player.current_room
-        # traversal(current_room)
+#     # If there are unexplored exits
+#     else:
+#         current_room = player.current_room
+#         # traversal(current_room)
 
-backtrack(curr_index= -1)
+# backtrack(curr_index= -1)
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
