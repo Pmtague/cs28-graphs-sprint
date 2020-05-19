@@ -72,7 +72,7 @@ for room in room_graph:
 
 
 # Spawn in starting room
-def traversal(current_room, room_graph):
+def traversal(current_room, room_graph, traversal_path):
 
     print("Current Room", current_room)
 
@@ -95,33 +95,41 @@ def traversal(current_room, room_graph):
         if room not in visited:
             visited.add(current_room.id)
             print("Visited", visited)
-            print("Room", room)
 
-        # Find the available exits in the starting room
-        exits = current_room.get_exits()
-        print("Exits", exits)
+            # Find the available exits in the current room
+            exits = current_room.get_exits()
+            print("Exits", exits)
 
-        # Determine which of the available exits are unexplored
-        unexplored_exits = []
+            # Determine which of the available exits are unexplored
+            unexplored_exits = []
+            unexplored_rooms = []
 
-        print("Test", room_graph[current_room.id][1][exits[1]][1])
-        for exit in exits:
-            if room_graph[current_room.id][1][exit][1] == "?":
-                unexplored_exits.append(exit)
-                print("Unexplored", unexplored_exits)
+            for exit in exits:
+                if room_graph[current_room.id][1][exit][1]:
+                    unexplored_exits.append(exit)
+                    unexplored_rooms.append(room_graph[current_room.id][1][exit][0])
+                    print("Unexplored Rooms", unexplored_rooms)
+                    
+            # Add the rooms in the unexplored directions to the stack
+            for new_room in unexplored_rooms:
+                random_room = random.choice(unexplored_rooms)
+                if random_room not in unexplored_rooms:
+                    s.push(random_room)
+                    print("Random", s)
 
-        # Choose one of the available exits at random
-        random_direction = random.choice(unexplored_exits)
-        print("Random", random_direction)
+            # # Update the current room to the unvisited room in the random direction
+            # current_room.id = room_graph[current_room.id][1][random_direction][0]
+            # print("Current Room", current_room)
 
-        # Explore the unvisited room in the random direction
-        
+            # # Add the direction moved to the traversal path
+            # new_traversal_path = traversal_path.copy()
+            # new_traversal_path.append(random_direction)
+            # print("Traversal Path", new_traversal_path)
 
-        # Mark the exit as explored
+            # # Mark the exit as explored
+            # room_graph[current_room.id][1][random_direction][1] = None
 
-        # Look for unexplored exits
-
-        # If there are unexplored exits, repeat from choosing one of the available exits at random
+            # If there are unexplored exits, repeat from choosing one of the available exits at random
 
         # If there are not unexplored exits, move back a room and check for unexplored exits
 
@@ -132,7 +140,7 @@ def traversal(current_room, room_graph):
         # When rooms visited = 500, you're done
 
 
-traversal(player.current_room, room_graph)
+traversal(player.current_room, room_graph, traversal_path)
 
 # Helper function to use BFS to find the nearest unexplored path
 
